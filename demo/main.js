@@ -16,10 +16,12 @@ export default class WrapContainer extends Component {
             width: props.width || 700,
             height: props.height || 400,
             image: props.image,
+            rotate: props.rotate,
             imageName: props.imageName || 'image',
             editState: consts.states.NORMAL,
             textName: props.textName,
             textColor:props.textColor || '#FF5500',
+            textNames: props.textNames,
             fontSize:props.fontSize ||  50,
             originPosition: props.originPosition ||  {x: 313.69, y: 374.0458015267176} ,
             arrow: {
@@ -37,9 +39,11 @@ export default class WrapContainer extends Component {
                 stroke: '#FF3440'
             }
         };
+
     }
 
     componentDidMount() {
+        
         window.fabricPhoto = this.fp = new FabricPhoto('#upload-file-image-preview', {
             cssMaxWidth: this.state.width,
             cssMaxHeight: this.state.height
@@ -87,14 +91,31 @@ export default class WrapContainer extends Component {
                 //     },
                 //     position: obj.originPosition
                 // });
+
                 console.log('--activateText--new-->', obj, this.state);
-                this.fp.addText(this.state.textName, {
-                    styles: {
-                        fill: this.state.textColor,
-                        fontSize: this.state.fontSize
-                    },
-                    position: this.state.originPosition
-                });
+                if (typeof this.state.textNames == 'object') {
+                    this.state.textNames.forEach(item => {
+                        this.fp.addText(item.textName, {
+                            styles: {
+                                fill: item.textColor,
+                                fontSize: item.fontSize
+                            },
+                            position: item.originPosition
+                        });
+                    })
+                    
+                } else if (this.state.textName){
+                    this.fp.addText(this.state.textName, {
+                        styles: {
+                            fill: this.state.textColor,
+                            fontSize: this.state.fontSize
+                        },
+                        position: this.state.originPosition
+                    });
+                }
+                
+
+             
             }
         });
         this.fp.on({
@@ -129,9 +150,11 @@ export default class WrapContainer extends Component {
         });
         if (this.state.text) {
             this.onTextBtnClick()
+            console.log('this.state.rotate1', this.state.rotate)
+        
             const event = document.createEvent('MouseEvents');
             event.initEvent('mousedown', true, true);
-            document.querySelector('.upper-canvas').dispatchEvent(event);
+            document.querySelector('.upper-canvas').dispatchEvent(event)
         }
     }
 
@@ -239,6 +262,7 @@ export default class WrapContainer extends Component {
     onTextBtnClick() {
         if (this.fp.getCurrentState() === consts.states.TEXT) {
             this.fp.endAll();
+           
             this.resetEditorState();
         } else {
             this.setState({
@@ -250,7 +274,7 @@ export default class WrapContainer extends Component {
         }
     }
 
-    onRotationBtnClick() {
+    onRotationBtnClick(rotate) {
         this.fp.endAll();
         this.fp.rotate(90);
         this.resetEditorState();
@@ -497,7 +521,7 @@ export default class WrapContainer extends Component {
             menus = null;
         }
         return (
-            <div className="wrap_inner">
+            <div className="wrap_inner" >
                 <div className="main">
                     <div className="upload-file-image-preview" id="upload-file-image-preview"></div>
                     <div className={btnClassname}>
@@ -571,4 +595,5 @@ export default class WrapContainer extends Component {
             </div>
         );
     }
+    
 }

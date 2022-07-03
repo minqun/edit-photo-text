@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-04-20 09:32:29
- * @LastEditTime: 2022-05-19 14:09:56
+ * @LastEditTime: 2022-07-03 23:19:37
  * @LastEditors: M.re c1029mq@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /fabric-photo/demo/index.js
@@ -35,23 +35,36 @@ export const ImageTextEdit = function (props) {
         })
         
     }
-    this.dom = ReactDOM.render(
+    if (props.el) {
+this.dom = ReactDOM.render(
         <div>
             <Main {...props}/>
         </div>,
         document.getElementById(props.el)
     );
+    }
+    
     return this
 }
 window.ImageTextEdit = ImageTextEdit
-
 // var ImageTextEditData = new ImageTextEdit({
 //     el: 'demo_container',
 //     width: 700,
 //     height: 400,
 //     image: 'https://img0.baidu.com/it/u=2862534777,914942650&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500',
 //     imageName: 'test',
-//     textName: '测试',
+//     rotate: 60,
+//     textNames: [{
+//         textName: '测试11',
+//         originPosition: {x: 313.69, y: 374.0458015267176},
+//         textColor: '#000',
+//         fontSize: 14,
+//     },{
+//         textName: '测试22',
+//         originPosition: {x: 313.69, y: 374.0458015267176},
+//         textColor: '#000',
+//         fontSize: 14,
+//     }],
 //     originPosition: {x: 313.69, y: 374.0458015267176},
 
 // })
@@ -60,3 +73,4 @@ window.ImageTextEdit = ImageTextEdit
 //         console.log(res)
 //     })
 // }, 3000)
+
